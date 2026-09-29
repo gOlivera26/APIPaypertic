@@ -1,0 +1,22 @@
+// PagoTicAPI.Tests Global Usings
+global using Xunit;
+global using FluentAssertions;
+global using Moq;
+global using Microsoft.AspNetCore.Mvc;
+global using Microsoft.AspNetCore.Http;
+global using Microsoft.EntityFrameworkCore;
+global using Microsoft.Extensions.Caching.Memory;
+global using Microsoft.Extensions.Logging;
+global using Microsoft.Extensions.Options;
+global using PagoTicAPI.Application.ResponseDto.Common;
+global using PagoTicAPI.Application.Clients.Config;
+global using PagoTicAPI.Application.Clients.Interfaces;
+global using PagoTicAPI.Application.Clients.PayPerTic.Contracts.Payments;
+global using PagoTicAPI.Application.Clients.PayPerTic.Contracts.Webhooks;
+global using PagoTicAPI.Application.RequestDto.PayPerTic;
+global using PagoTicAPI.Application.ResponseDto.PayPerTic;
+global using PagoTicAPI.Application.Services.Implementations;
+global using PagoTicAPI.Application.Services.Interfaces;
+global using PagoTicAPI.Domain.Context;
+global using PagoTicAPI.Domain.Models;
+global using PagoTicAPI.Tests.Helpers;

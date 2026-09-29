@@ -1,0 +1,33 @@
+name: CI
+
+on:
+  push:
+  pull_request:
+
+permissions:
+  contents: read
+
+jobs:
+  build-and-test:
+    runs-on: ubuntu-latest
+    env:
+      Cors__AllowedOrigins__0: https://localhost.invalid
+      ConnectionStrings__Gateway: CI_IN_MEMORY_ONLY
+      DBSCHEMA: CI_ONLY
+      Uses__UseSwagger: 'true'
+    steps:
+      - uses: actions/checkout@v7
+        with:
+          persist-credentials: false
+      - uses: actions/setup-dotnet@v6
+        with:
+          dotnet-version: '8.0.x'
+      - name: Generate ephemeral test JWT key
+        shell: bash
+        run: echo "Jwt__SecretKey=$(openssl rand -hex 32)" >> "$GITHUB_ENV"
+      - name: Restore
+        run: dotnet restore PagoTicAPI.slnx
+      - name: Build
+        run: dotnet build PagoTicAPI.slnx --no-restore
+      - name: Test
+        run: dotnet test PagoTicAPI.slnx --no-build --no-restore

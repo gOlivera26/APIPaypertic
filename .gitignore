@@ -1,0 +1,43 @@
+# Public repository allowlist. Files not explicitly allowed remain local.
+/*
+!/.gitignore
+!/PagoTicAPI.slnx
+
+# CI workflow only.
+!/.github/
+/.github/**
+!/.github/workflows/
+!/.github/workflows/ci.yml
+
+# Production source projects.
+!/PagoTicAPI.API/
+/PagoTicAPI.API/**
+!/PagoTicAPI.API/**/
+!/PagoTicAPI.API/**/*.cs
+!/PagoTicAPI.API/**/*.csproj
+
+!/PagoTicAPI.Application/
+/PagoTicAPI.Application/**
+!/PagoTicAPI.Application/**/
+!/PagoTicAPI.Application/**/*.cs
+!/PagoTicAPI.Application/**/*.csproj
+
+!/PagoTicAPI.Domain/
+/PagoTicAPI.Domain/**
+!/PagoTicAPI.Domain/**/
+!/PagoTicAPI.Domain/**/*.cs
+!/PagoTicAPI.Domain/**/*.csproj
+
+# Test project needed by the solution and GitHub Actions.
+!/tests/
+/tests/**
+!/tests/PagoTicAPI.Tests/
+!/tests/PagoTicAPI.Tests/**/
+!/tests/PagoTicAPI.Tests/**/*.cs
+!/tests/PagoTicAPI.Tests/**/*.csproj
+
+# Generated files remain excluded even inside allowed source directories.
+**/bin/
+**/obj/
+**/TestResults/
+**/coverage/

@@ -1,0 +1,8 @@
+<Solution>
+  <Folder Name="/tests/">
+    <Project Path="tests/PagoTicAPI.Tests/PagoTicAPI.Tests.csproj" />
+  </Folder>
+  <Project Path="PagoTicAPI.API/PagoTicAPI.API.csproj" />
+  <Project Path="PagoTicAPI.Application/PagoTicAPI.Application.csproj" />
+  <Project Path="PagoTicAPI.Domain/PagoTicAPI.Domain.csproj" />
+</Solution>
