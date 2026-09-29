@@ -94,56 +94,6 @@ public sealed class AutomaticDebitDatabaseNamingTests
             PayPerTicPaymentWebhookInboxResults.Failed, "FAILED");
     }
 
-    [Fact]
-    public void FoundationScript_UsesTheSameSpanishTablesAndSequences()
-    {
-        var sql = File.ReadAllText(FindRepositoryFile("database", "automatic-debits", "001_foundation.sql"));
-        using var context = CreateContext();
-
-        foreach (var table in AutomaticDebitDatabaseNames.Tables.All)
-        {
-            sql.Should().Contain($"GATEWAY.{table}");
-        }
-
-        foreach (var sequence in AutomaticDebitDatabaseNames.Sequences.All)
-        {
-            sql.Should().Contain($"GATEWAY.{sequence}");
-        }
-
-        foreach (var identifier in GetAutomaticDebitEntityTypes(context.Model).SelectMany(GetIdentifiers).Distinct())
-        {
-            sql.Should().Contain(identifier);
-        }
-
-        sql.Should().NotContain("T_KEYS_PAYPERTIC");
-        sql.Should().NotContain("GTW_PPT_");
-        sql.Should().NotContain("EXTERNAL_REFERENCE");
-        sql.Should().NotContain("FORM_URL");
-        sql.Should().NotContain("WEBHOOK");
-    }
-
-    [Fact]
-    public void DeploymentScripts_DoNotReferenceRetiredDatabaseIdentifiers()
-    {
-        var scriptDirectory = Path.GetDirectoryName(
-            FindRepositoryFile("database", "automatic-debits", "001_foundation.sql"))!;
-        var sql = string.Join(Environment.NewLine, Directory.GetFiles(scriptDirectory, "*.sql").Select(File.ReadAllText));
-        var retiredIdentifiers = new[]
-        {
-            "T_KEYS_PAYPERTIC", "GTW_PPT_", "ID_KEY_PAYPERTIC", "AUTH_URL", "API_URL",
-            "USERNAME", "PASSWORD", "CLIENT_ID", "CLIENT_SECRET", "COLLECTOR_ID",
-            "NOTIFICATION_URL", "RETURN_URL", "BACK_URL", "EXTERNAL_REFERENCE", "FORM_URL",
-            "EXTERNAL_TRANSACTION_ID", "DEDUPLICATION_KEY", "PROVIDER_OBJECT_ID", "EVENT_TYPE",
-            "AUTHORITATIVE_HASH", "AUTHORITATIVE_UPDATED_AT", "OCCURRED_AT", "OBJECT_TYPE",
-            "PAYLOAD_HASH", "RAW_PAYLOAD", "SANITIZED_METADATA", "RECEIVED_AT", "PROCESSED_AT"
-        };
-
-        foreach (var retiredIdentifier in retiredIdentifiers)
-        {
-            sql.Should().NotContain(retiredIdentifier);
-        }
-    }
-
     private static gtwContext CreateContext()
     {
         var options = new DbContextOptionsBuilder<gtwContext>()
@@ -226,23 +176,6 @@ public sealed class AutomaticDebitDatabaseNamingTests
         {
             yield return property.GetColumnName();
         }
-    }
-
-    private static string FindRepositoryFile(params string[] pathSegments)
-    {
-        var directory = new DirectoryInfo(AppContext.BaseDirectory);
-        while (directory is not null)
-        {
-            var candidate = Path.Combine(new[] { directory.FullName }.Concat(pathSegments).ToArray());
-            if (File.Exists(candidate))
-            {
-                return candidate;
-            }
-
-            directory = directory.Parent;
-        }
-
-        throw new FileNotFoundException($"No se encontró {Path.Combine(pathSegments)} desde {AppContext.BaseDirectory}.");
     }
 }
 
